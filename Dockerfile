@@ -44,6 +44,17 @@ RUN git clone https://github.com/oobabooga/text-generation-webui /build
 
 WORKDIR /build
 
+FROM nvidia/cuda:11.8.0-devel-ubuntu22.04 as builder-model
+
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y curl && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /build
+
+RUN curl -L https://huggingface.co/TheBloke/stable-vicuna-13B-GGML/resolve/main/stable-vicuna-13B.ggml.q4_3.bin -o /build/stable-vicuna-13B.ggml.q4_3.bin
+
+
 FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04
 
 LABEL maintainer="Wing Lian <wing.lian@gmail.com>"
@@ -105,9 +116,7 @@ COPY entrypoint.sh /app/entrypoint.sh
 RUN chown -R appuser:appuser /app && find /app -type d -exec chmod 0755 {} \;
 RUN chmod +x /app/entrypoint.sh
 
-
 USER appuser
-RUN curl -L https://huggingface.co/TheBloke/stable-vicuna-13B-GGML/resolve/main/stable-vicuna-13B.ggml.q4_3.bin -o models/stable-vicuna-13B.ggml.q4_3.bin
-
+COPY --from=builder-model /build/. /app/models/
 
 ENTRYPOINT ["/app/entrypoint.sh"]
