@@ -1,14 +1,14 @@
 FROM nvidia/cuda:11.8.0-devel-ubuntu22.04 as builder-llamacpp
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y git vim build-essential python3-dev python3-venv && \
+    apt-get install --no-install-recommends -y git vim build-essential python3-dev python3-venv libblas-dev liblapack-dev libopenblas-dev && \
     rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/ggerganov/llama.cpp.git /build
 
 WORKDIR /build
 
-RUN make -j
+RUN make -j LLAMA_OPENBLAS=1
 
 #FROM nvidia/cuda:11.8.0-devel-ubuntu22.04 as builder
 #
