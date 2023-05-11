@@ -1,0 +1,4 @@
+---
+model_base: huggyllama/llama-13b
+model_name: huggyllama_llama-13b
+url: https://huggingface.co/TheBloke/stable-vicuna-13B-GGML/resolve/main/stable-vicuna-13B.ggml.q4_2.bin

@@ -1,14 +1,17 @@
 FROM nvidia/cuda:11.8.0-devel-ubuntu22.04 as builder-llamacpp
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y git vim build-essential python3-dev python3-venv libblas-dev liblapack-dev libopenblas-dev && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install --no-install-recommends -y git vim build-essential python3 python3-pip python3-dev python3-venv libblas-dev liblapack-dev libopenblas-dev cmake && \
+    rm -rf /var/lib/apt/lists/* && \
+    pip3 install scikit-build
 
-RUN git clone https://github.com/ggerganov/llama.cpp.git /build
+RUN git clone https://github.com/abetlen/llama-cpp-python.git /build
+RUN git clone https://github.com/ggerganov/llama.cpp.git /build/vendor/llama.cpp
 
 WORKDIR /build
 
-RUN make -j LLAMA_OPENBLAS=1
+RUN CMAKE_ARGS="-DLLAMA_OPENBLAS=on" FORCE_CMAKE=1 python3 setup.py bdist_wheel
+# dist/llama_cpp_python-0.1.48-cp310-cp310-linux_x86_64.whl
 
 #FROM nvidia/cuda:11.8.0-devel-ubuntu22.04 as builder
 #
@@ -36,24 +39,17 @@ RUN make -j LLAMA_OPENBLAS=1
 #
 FROM nvidia/cuda:11.8.0-devel-ubuntu22.04 as builder-webui
 
+ARG OOBA_GIT_SHA=7169316
+
 RUN apt-get update && \
     apt-get install --no-install-recommends -y git vim build-essential python3-dev python3-venv && \
     rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/oobabooga/text-generation-webui /build
+RUN cd /build && \
+    git checkout $OOBA_GIT_SHA
 
 WORKDIR /build
-
-FROM nvidia/cuda:11.8.0-devel-ubuntu22.04 as builder-model
-
-RUN apt-get update && \
-    apt-get install --no-install-recommends -y curl && \
-    rm -rf /var/lib/apt/lists/*
-
-WORKDIR /build
-
-RUN curl -L https://huggingface.co/TheBloke/stable-vicuna-13B-GGML/resolve/main/stable-vicuna-13B.ggml.q4_3.bin -o /build/stable-vicuna-13B.ggml.q4_3.bin
-
 
 FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04
 
@@ -61,7 +57,7 @@ LABEL maintainer="Wing Lian <wing.lian@gmail.com>"
 LABEL description="Docker image for GPTQ-for-LLaMa and Text Generation WebUI"
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y build-essential curl libportaudio2 libasound-dev git python3 python3-pip make g++ && \
+    apt-get install --no-install-recommends -y build-essential curl libportaudio2 libasound-dev git python3 python3-pip make g++ libblas-dev liblapack-dev libopenblas-dev && \
     rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -g 1000 appuser && \
@@ -73,10 +69,8 @@ RUN chown -R appuser:appuser /app
 
 WORKDIR /app
 
-COPY --from=builder-llamacpp /build/main /app
-
-ARG WEBUI_VERSION
-RUN test -n "${WEBUI_VERSION}" && git reset --hard ${WEBUI_VERSION} || echo "Using provided webui source"
+#ARG WEBUI_VERSION
+#RUN test -n "${WEBUI_VERSION}" && git reset --hard ${WEBUI_VERSION} || echo "Using provided webui source"
 
 RUN virtualenv /app/venv
 RUN . /app/venv/bin/activate && \
@@ -106,17 +100,24 @@ RUN . /app/venv/bin/activate && \
 
 RUN cp /app/venv/lib/python3.10/site-packages/bitsandbytes/libbitsandbytes_cuda118.so /app/venv/lib/python3.10/site-packages/bitsandbytes/libbitsandbytes_cpu.so
 
+COPY --from=builder-llamacpp /build/dist/llama_cpp_python-0.1.48-cp310-cp310-linux_x86_64.whl /app
+RUN pip3 uninstall llama_cpp_python && \
+    pip3 install /app/llama_cpp_python-0.1.48-cp310-cp310-linux_x86_64.whl && \
+    rm /app/llama_cpp_python-0.1.48-cp310-cp310-linux_x86_64.whl
+
 RUN mkdir /app/cache
 RUN mkdir -p /app/cache/huggingface/hub
 
 ENV TRANSFORMERS_CACHE=/app/cache/huggingface/hub
 
+RUN pip install pyyaml
 COPY --from=builder-webui /build/. /app/
 COPY entrypoint.sh /app/entrypoint.sh
+COPY models.yml /app/models.yml
+COPY server_spaces.py /app/server_spaces.py
 RUN chown -R appuser:appuser /app && find /app -type d -exec chmod 0755 {} \;
 RUN chmod +x /app/entrypoint.sh
 
 USER appuser
-COPY --from=builder-model /build/. /app/models/
 
 ENTRYPOINT ["/app/entrypoint.sh"]
