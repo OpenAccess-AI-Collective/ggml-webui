@@ -8,7 +8,8 @@ on:
 jobs:
   build:
     runs-on: self-hosted
-
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
