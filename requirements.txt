@@ -1,0 +1,8 @@
+gradio
+torch
+transformers
+transformers[sentencepiece]
+numpy
+accelerate
+bitsandbytes
+pyyaml
