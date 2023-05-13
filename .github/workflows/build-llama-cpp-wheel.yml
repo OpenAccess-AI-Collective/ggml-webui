@@ -20,12 +20,16 @@ jobs:
       - name: Run Docker container
         run: docker run --name my-artifact-builder artifact-builder
 
-      - name: Copy artifact from Docker container
-        run: docker cp my-artifact-builder:/build/dist/llama_cpp_python-0.1.49-cp38-cp38-linux_x86_64.whl ./llama_cpp_python-0.1.49-cp38-cp38-linux_x86_64.whl
+      - name: Copy GPU & CPU artifact from Docker container
+        run: |
+          docker cp my-artifact-builder:/build/dist/llama_cpp_python-gpu-0.1.49-cp38-cp38-linux_x86_64.whl ./llama_cpp_python-gpu-0.1.49-cp38-cp38-linux_x86_64.whl
+          docker cp my-artifact-builder:/build/dist/llama_cpp_python-cpu-0.1.49-cp38-cp38-linux_x86_64.whl ./llama_cpp_python-cpu-0.1.49-cp38-cp38-linux_x86_64.whl
 
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: ./llama_cpp_python-0.1.49-cp38-cp38-linux_x86_64.whl
+          files:
+            - ./llama_cpp_python-gpu-0.1.49-cp38-cp38-linux_x86_64.whl
+            - ./llama_cpp_python-cpu-0.1.49-cp38-cp38-linux_x86_64.whl
           token: ${{ secrets.GITHUB_TOKEN }}
