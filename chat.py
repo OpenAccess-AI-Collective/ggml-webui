@@ -1,15 +1,25 @@
 import gradio as gr
 import yaml
 from huggingface_hub import hf_hub_download
+from huggingface_hub.utils import LocalEntryNotFoundError
 from llama_cpp import Llama
 
 with open("./config.yml", "r") as f:
     config = yaml.load(f, Loader=yaml.Loader)
-fp = hf_hub_download(
-    repo_id=config["repo"], filename=config["file"],
-)
+while True:
+    try:
+        fp = hf_hub_download(
+            repo_id=config["repo"], filename=config["file"],
+        )
+        break
+    except LocalEntryNotFoundError as e:
+        if "Connection error" in str(e):
+            print(str(e) + ", retrying...")
+        else:
+            raise(e)
 
 llm = Llama(model_path=fp, **config["llama_cpp"])
+
 
 def chat(inp, history, system_message):
     history = history or []
