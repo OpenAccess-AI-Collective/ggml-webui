@@ -5,8 +5,12 @@ colorFrom: blue
 colorTo: gray
 sdk: gradio
 sdk_version: 3.29.0
-app_file: app.py
+app_file: chat.py
 pinned: false
 ---
 
-Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
+# GGML UI Inference w/ HuggingFace Spaces
+
+Brought to you by [OpenAccess AI Collective](https://github.com/OpenAccess-AI-Collective)
+
+
