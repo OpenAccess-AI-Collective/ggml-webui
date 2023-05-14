@@ -1,1 +1,2 @@
+llama-cpp-python @ https://github.com/OpenAccess-AI-Collective/ggml-webui/releases/download/v0.1.49-rc6/llama_cpp_python-cpu-0.1.49-cp38-cp38-linux_x86_64.whl
 pyyaml

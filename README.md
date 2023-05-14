@@ -3,7 +3,7 @@ title: Ggml Ui
 emoji: 🏃
 colorFrom: blue
 colorTo: gray
-sdk: docker
+sdk: gradio
 sdk_version: 3.29.0
 app_file: chat.py
 pinned: false
