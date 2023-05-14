@@ -26,6 +26,7 @@ jobs:
         run: |
           docker cp my-artifact-builder:/build/dists/llama_cpp_python-gpu-0.1.49-cp38-cp38-linux_x86_64.whl ./llama_cpp_python-gpu-0.1.49-cp38-cp38-linux_x86_64.whl
           docker cp my-artifact-builder:/build/dists/llama_cpp_python-cpu-0.1.49-cp38-cp38-linux_x86_64.whl ./llama_cpp_python-cpu-0.1.49-cp38-cp38-linux_x86_64.whl
+          docker cp my-artifact-builder:/build/dists/libopenblas.so.0 ./libopenblas.so.0
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -34,4 +35,5 @@ jobs:
           files: |
             llama_cpp_python-gpu-0.1.49-cp38-cp38-linux_x86_64.whl
             llama_cpp_python-cpu-0.1.49-cp38-cp38-linux_x86_64.whl
+            libopenblas.so.0
           token: ${{ secrets.GITHUB_TOKEN }}

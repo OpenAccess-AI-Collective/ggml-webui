@@ -46,4 +46,5 @@ RUN pyenv install 3.8.9 && \
     cp dist/llama_cpp_python-0.1.49-cp38-cp38-linux_x86_64.whl dists/llama_cpp_python-gpu-0.1.49-cp38-cp38-linux_x86_64.whl && \
     CMAKE_ARGS="-DLLAMA_OPENBLAS=off" FORCE_CMAKE=1 python3 setup.py bdist_wheel && \
     cp dist/llama_cpp_python-0.1.49-cp38-cp38-linux_x86_64.whl dists/llama_cpp_python-cpu-0.1.49-cp38-cp38-linux_x86_64.whl && \
+    find / -name "libopenblas.so.0" -exec cp {} /build/dists/ && \
     ls -l /build/dists/
