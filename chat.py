@@ -87,4 +87,4 @@ with blocks:
     submit.click(chat, inputs=[message, chat_history_state, system_msg], outputs=[chatbot, chat_history_state, message])
     message.submit(chat, inputs=[message, chat_history_state, system_msg], outputs=[chatbot, chat_history_state, message])
 
-blocks.queue(concurrency_count=10).launch(debug=True)
+blocks.queue(max_size=32, concurrency_count=3).launch(debug=True, server_name="0.0.0.0", server_port=7860)
