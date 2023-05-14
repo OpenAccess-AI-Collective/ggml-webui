@@ -5,6 +5,7 @@ ARG CMAKE_VERSION_PATCH=3.26.3
 ARG CMAKE_OS=linux
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=UTC
+ENV TORCH_CUDA_ARCH_LIST="7.0 7.5 8.0 8.6+PTX"
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
