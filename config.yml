@@ -4,5 +4,11 @@ file: wizard-vicuna-13B.ggml.q5_1.bin
 # if the repo above doesn't include the tokenizer set the base repo it was based on with a valid tokenizer model
 base_model: junelee/wizard-vicuna-13b
 llama_cpp:
-  n_ctx: 1024
+  n_ctx: 2048
   n_gpu_layers: 40  # llama 13b has 40 layers
+chat:
+  max_tokens: 1024
+  stop:
+    - "</s>"
+    - "<unk>"
+    - "### User:"

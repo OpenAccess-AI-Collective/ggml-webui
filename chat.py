@@ -36,7 +36,7 @@ def chat(history, system_message):
                         for item in history])
 
     history[-1][1] = ""
-    for output in llm(messages, max_tokens=512, stop=["</s>", "<unk>", "### User:"], echo=False, stream=True):
+    for output in llm(messages, echo=False, stream=True, **config['chat']):
         answer = output['choices'][0]['text']
         history[-1][1] += answer
 
@@ -91,7 +91,7 @@ with blocks:
     stop.click(fn=None, inputs=None, outputs=None, cancels=[submit_click_event, message_submit_event], queue=False)
 
     gr.Markdown(f"""
-        - This is the {config["repo"]}/{config["file"]} model.
+        - This is the [{config["repo"]}](https://huggingface.co/{config["repo"]}) model file [{config["file"]}](https://huggingface.co/{config["repo"]}/blob/main/{config["file"]})
         - This Space uses GGML with GPU support, so it can run larger models on smaller GPUs & VRAM quickly.
         - This is running on a smaller, shared GPU, so it may take a few seconds to respond. 
         - [Duplicate the Space](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui?duplicate=true) to skip the queue and run in a private space or to use your own GGML models.
@@ -99,4 +99,4 @@ with blocks:
         - Contribute at [https://github.com/OpenAccess-AI-Collective/ggml-webui](https://github.com/OpenAccess-AI-Collective/ggml-webui)
         """)
 
-blocks.queue(max_size=8, concurrency_count=2).launch(debug=True, server_name="0.0.0.0", server_port=7860)
+blocks.queue(max_size=32, concurrency_count=4).launch(debug=True, server_name="0.0.0.0", server_port=7860)
