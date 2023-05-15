@@ -22,7 +22,8 @@ description = f"""
 ### brought to you by OpenAccess AI Collective
 - This is the [{config["repo"]}](https://huggingface.co/{config["repo"]}) model file [{config["file"]}](https://huggingface.co/{config["repo"]}/blob/main/{config["file"]})
 - This Space uses GGML with GPU support, so it can quickly run larger models on smaller GPUs & VRAM.
-- This is running on a smaller, shared GPU, so it may take a few seconds to respond. 
+- This is running on a smaller, shared GPU, so it may take a few seconds to respond.
+- Due to a [missing feature in Gradio](https://github.com/gradio-app/gradio/issues/3914), the chatbot interface will not show you your status in the queue. If it's stuck, be patient.  
 - [Duplicate the Space](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui?duplicate=true) to skip the queue and run in a private space or to use your own GGML models.
 - When using your own models, simply update the [config.yml](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui/blob/main/config.yml)
 - You can use instruct or chatbot mode by updating the README.md to either `app_file: instruct.py` or `app_file: chat.py`
