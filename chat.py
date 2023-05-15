@@ -86,7 +86,7 @@ with blocks:
             gr.Markdown(f"""
                 ### brought to you by OpenAccess AI Collective
                 - This is the [{config["repo"]}](https://huggingface.co/{config["repo"]}) model file [{config["file"]}](https://huggingface.co/{config["repo"]}/blob/main/{config["file"]})
-                - This Space uses GGML with GPU support, so it can run larger models on smaller GPUs & VRAM quickly.
+                - This Space uses GGML with GPU support, so it can quickly run larger models on smaller GPUs & VRAM.
                 - This is running on a smaller, shared GPU, so it may take a few seconds to respond. 
                 - [Duplicate the Space](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui?duplicate=true) to skip the queue and run in a private space or to use your own GGML models.
                 - When using your own models, simply update the [config.yml](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui/blob/main/config.yml)")
