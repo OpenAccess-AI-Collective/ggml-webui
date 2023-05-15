@@ -5,3 +5,4 @@ file: wizard-vicuna-13B.ggml.q5_1.bin
 base_model: junelee/wizard-vicuna-13b
 llama_cpp:
   n_ctx: 1024
+  n_gpu_layers: 40  # llama 13b has 40 layers

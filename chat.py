@@ -38,7 +38,7 @@ def chat(history, system_message):
     history[-1][1] = ""
     for output in llm(messages, max_tokens=512, stop=["</s>", "<unk>", "### User:"], echo=False, stream=True):
         answer = output['choices'][0]['text']
-        history[-1][1] = answer
+        history[-1][1] += answer
 
         yield history, history
 
