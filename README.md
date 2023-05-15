@@ -5,7 +5,7 @@ colorFrom: blue
 colorTo: gray
 sdk: gradio
 sdk_version: 3.29.0
-app_file: chat.py
+app_file: instruct.py
 pinned: false
 ---
 
