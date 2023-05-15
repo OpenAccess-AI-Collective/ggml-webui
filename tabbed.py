@@ -87,6 +87,7 @@ with gr.Blocks() as demo:
                     - [Duplicate the Space](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui?duplicate=true) to skip the queue and run in a private space or to use your own GGML models.
                     - When using your own models, simply update the [config.yml](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui/blob/main/config.yml)
                     - Contribute at [https://github.com/OpenAccess-AI-Collective/ggml-webui](https://github.com/OpenAccess-AI-Collective/ggml-webui)
+                    - Many thanks to [TheBloke](https://huggingface.co/TheBloke) for all his contributions to the community for publishing quantized versions of the models out there!  
                     """)
     with gr.Tab("Instruct"):
         gr.Markdown("# GGML Spaces Instruct Demo")
