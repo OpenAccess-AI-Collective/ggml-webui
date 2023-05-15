@@ -1,5 +1,6 @@
 FROM nvidia/cuda:11.3.1-cudnn8-devel-ubuntu18.04
 
+ARG LLAMA_CPP_VERSION="0.1.50"
 ARG CMAKE_VERSION=3.26
 ARG CMAKE_VERSION_PATCH=3.26.3
 ARG CMAKE_OS=linux
@@ -32,7 +33,7 @@ ENV HOME /home/appuser
 ENV PYENV_ROOT $HOME/.pyenv
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
-RUN git clone --depth 1 --branch v0.1.50 https://github.com/abetlen/llama-cpp-python.git /build
+RUN git clone --depth 1 --branch v$LLAMA_CPP_VERSION https://github.com/abetlen/llama-cpp-python.git /build
 RUN git clone https://github.com/ggerganov/llama.cpp.git /build/vendor/llama.cpp
 RUN curl https://pyenv.run | bash
 
@@ -43,7 +44,7 @@ RUN pyenv install 3.8.9 && \
     pip install --no-cache-dir datasets "huggingface-hub>=0.12.1" "protobuf<4" "click<8.1" "scikit-build" && \
     CMAKE_ARGS="-DLLAMA_CUBLAS=on -DLLAMA_OPENBLAS=off" FORCE_CMAKE=1 python3 setup.py bdist_wheel && \
     mkdir /build/dists/ && \
-    cp dist/llama_cpp_python-0.1.50-cp38-cp38-linux_x86_64.whl dists/llama_cpp_python-gpu-0.1.50-cp38-cp38-linux_x86_64.whl && \
+    cp dist/llama_cpp_python-${LLAMA_CPP_VERSION}-cp38-cp38-linux_x86_64.whl dists/llama_cpp_python-gpu-${LLAMA_CPP_VERSION}-cp38-cp38-linux_x86_64.whl && \
     CMAKE_ARGS="-DLLAMA_CUBLAS=off -DLLAMA_OPENBLAS=off" FORCE_CMAKE=1 python3 setup.py bdist_wheel && \
-    cp dist/llama_cpp_python-0.1.50-cp38-cp38-linux_x86_64.whl dists/llama_cpp_python-cpu-0.1.50-cp38-cp38-linux_x86_64.whl && \
+    cp dist/llama_cpp_python-${LLAMA_CPP_VERSION}-cp38-cp38-linux_x86_64.whl dists/llama_cpp_python-cpu-${LLAMA_CPP_VERSION}-cp38-cp38-linux_x86_64.whl && \
     ls -l /build/dists/
