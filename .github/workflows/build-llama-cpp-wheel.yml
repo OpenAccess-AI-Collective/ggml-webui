@@ -40,6 +40,8 @@ jobs:
     needs: build
     runs-on: self-hosted
     if: github.event_name == 'release'
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
