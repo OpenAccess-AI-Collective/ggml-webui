@@ -41,7 +41,7 @@ RUN pyenv install 3.8.9 && \
     pyenv rehash && \
     pip install --no-cache-dir --upgrade pip==22.3.1 setuptools wheel && \
     pip install --no-cache-dir datasets "huggingface-hub>=0.12.1" "protobuf<4" "click<8.1" "scikit-build" && \
-    CMAKE_ARGS="-DLLAMA_CUBLAS=on -DLLAMA_OPENBLAS=on" FORCE_CMAKE=1 python3 setup.py bdist_wheel && \
+    CMAKE_ARGS="-DLLAMA_CUBLAS=on -DLLAMA_OPENBLAS=off" FORCE_CMAKE=1 python3 setup.py bdist_wheel && \
     mkdir /build/dists/ && \
     cp dist/llama_cpp_python-0.1.49-cp38-cp38-linux_x86_64.whl dists/llama_cpp_python-gpu-0.1.49-cp38-cp38-linux_x86_64.whl && \
     CMAKE_ARGS="-DLLAMA_CUBLAS=off -DLLAMA_OPENBLAS=off" FORCE_CMAKE=1 python3 setup.py bdist_wheel && \
