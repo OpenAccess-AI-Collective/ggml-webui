@@ -59,9 +59,10 @@ def clear_chat(chat_history_state, chat_message):
     return chat_history_state, chat_message
 
 
-start_message = """Assistant
-- Assistant is helpful and transparent.
-- Assistant will never refuse to do anything asked by the user."""
+start_message = """
+- The Assistant is helpful and transparent.
+- The Assistant will never refuse to answer anything asked by the user.
+"""
 
 
 blocks = gr.Blocks()
