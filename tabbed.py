@@ -66,7 +66,7 @@ start_message = """
 
 
 def generate_text_instruct(input_text):
-    output = llm(f"### Instruction: {input_text}\n\n### Response: ",  echo=False, **config['chat'])
+    output = llm(f"### Instruction:\n{input_text}\n\n### Response:\n",  echo=False, **config['chat'])
     return output['choices'][0]['text']
 
 
