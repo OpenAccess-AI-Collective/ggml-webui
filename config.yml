@@ -1,8 +1,6 @@
 ---
-#repo: TheBloke/wizard-mega-13B-GGML
-#file: wizard-mega-13B.ggml.q5_1.bin
-repo: TheBloke/wizard-vicuna-13B-GGML
-file: wizard-vicuna-13B.ggml.q5_1.bin
+repo: TheBloke/wizard-mega-13B-GGML
+file: wizard-mega-13B.ggml.q5_1.bin
 llama_cpp:
   n_ctx: 2048
   n_gpu_layers: 40  # llama 13b has 40 layers
