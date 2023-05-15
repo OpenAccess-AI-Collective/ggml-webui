@@ -12,7 +12,7 @@ fp = hf_hub_download(
 llm = Llama(model_path=fp)
 
 def generate_text(input_text):
-    output = llm(f"### Instruction: {input_text}\n\n### Response: ", stop=["</s>", "<unk>", "### Instruction:"], echo=True, **config['chat'])
+    output = llm(f"### Instruction: {input_text}\n\n### Response: ",  echo=False, **config['chat'])
     return output['choices'][0]['text']
 
 input_text = gr.inputs.Textbox(lines= 10, label="Enter your input text")
