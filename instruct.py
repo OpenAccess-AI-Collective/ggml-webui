@@ -23,11 +23,10 @@ description = f"""llama.cpp implementation in python [https://github.com/abetlen
 This is the {config["repo"]}/{config["file"]} model.
 """
 
-examples = [
-    ["Tell me a joke about old houses.", "Why did the old house break up with the new house? Because it was too modern!"],
-    ["What is the square root of 64?", "The square root of 64 is 8."],
-    ["Insult me", ""],
-]
-
-gr.Interface(fn=generate_text, inputs=input_text, outputs=output_text, title="Llama Language Model", description=description, examples=examples).launch()
-
+gr.Interface(
+    fn=generate_text,
+    inputs=input_text,
+    outputs=output_text,
+    title="Llama Language Model",
+    description=description,
+).queue(max_size=16, concurrency_count=1).launch()

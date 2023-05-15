@@ -65,9 +65,7 @@ start_message = """
 """
 
 
-blocks = gr.Blocks()
-
-with blocks:
+with gr.Blocks() as blocks:
     gr.Markdown("# GGML Spaces Demo")
 
     chatbot = gr.Chatbot()
@@ -107,12 +105,12 @@ with blocks:
     clear.click(lambda: None, None, chatbot, queue=False)
 
     submit_click_event = submit.click(
-        fn=user, inputs=[message, chat_history_state], outputs=[message, chat_history_state], queue=False
+        fn=user, inputs=[message, chat_history_state], outputs=[message, chat_history_state], queue=True
     ).then(
         fn=chat, inputs=[chat_history_state, system_msg, max_tokens, temperature, top_p, top_k, repeat_penalty], outputs=[chatbot, chat_history_state], queue=True
     )
     message_submit_event = message.submit(
-        fn=user, inputs=[message, chat_history_state], outputs=[message, chat_history_state], queue=False
+        fn=user, inputs=[message, chat_history_state], outputs=[message, chat_history_state], queue=True
     ).then(
         fn=chat, inputs=[chat_history_state, system_msg, max_tokens, temperature, top_p, top_k, repeat_penalty], outputs=[chatbot, chat_history_state], queue=True
     )
