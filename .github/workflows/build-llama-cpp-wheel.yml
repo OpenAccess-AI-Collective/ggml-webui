@@ -1,0 +1,58 @@
+name: Build wheel in Docker
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Dockerfile-llama-cpp-wheel'
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: self-hosted
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build . -t artifact-builder -f Dockerfile-llama-cpp-wheel
+
+      - name: Run Docker container
+        run: docker run --name my-artifact-builder artifact-builder
+
+      - name: Copy GPU & CPU artifact from Docker container
+        run: |
+          docker cp my-artifact-builder:/build/dists/*.whl .
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheels
+          path: |
+            *.whl
+
+  release:
+    needs: build
+    runs-on: self-hosted
+    if: github.event_name == 'release'
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: wheels
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            *.whl
+          token: ${{ secrets.GITHUB_TOKEN }}

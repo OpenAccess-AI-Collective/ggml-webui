@@ -90,10 +90,12 @@ with blocks:
     )
     stop.click(fn=None, inputs=None, outputs=None, cancels=[submit_click_event, message_submit_event], queue=False)
 
-    gr.Markdown("""
+    gr.Markdown(f"""
+        - This is the {config["repo"]}/{config["file"]} model.
+        - This Space uses GGML with GPU support, so it can run larger models on smaller GPUs & VRAM quickly.
         - This is running on a smaller, shared GPU, so it may take a few seconds to respond. 
         - [Duplicate the Space](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui?duplicate=true) to skip the queue and run in a private space or to use your own GGML models.
-        - When using your own models, simply update the [./config.yml](./config.yml)")
+        - When using your own models, simply update the [config.yml](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui/blob/main/config.yml)")
         - Contribute at [https://github.com/OpenAccess-AI-Collective/ggml-webui](https://github.com/OpenAccess-AI-Collective/ggml-webui)
         """)
 
