@@ -1,7 +1,6 @@
 --extra-index-url https://pypi.ngc.nvidia.com
 nvidia-cuda-runtime
 nvidia-cublas
-torch
 llama-cpp-python @ https://github.com/OpenAccess-AI-Collective/ggml-webui/releases/download/v0.1.50-rc3/llama_cpp_python-gpu-0.1.50-cp38-cp38-linux_x86_64.whl
 pyyaml
 torch
