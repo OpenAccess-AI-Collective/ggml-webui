@@ -9,7 +9,7 @@ fp = hf_hub_download(
     repo_id=config["repo"], filename=config["file"],
 )
 
-llm = Llama(model_path=fp)
+llm = Llama(model_path=fp, **config["llama_cpp"])
 
 def generate_text(input_text):
     output = llm(f"### Instruction: {input_text}\n\n### Response: ",  echo=False, **config['chat'])

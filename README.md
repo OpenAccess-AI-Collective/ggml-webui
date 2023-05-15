@@ -5,7 +5,7 @@ colorFrom: blue
 colorTo: gray
 sdk: gradio
 sdk_version: 3.29.0
-app_file: instruct.py
+app_file: tabbed.py
 pinned: false
 ---
 
@@ -15,5 +15,3 @@ pinned: false
 - Contribute at [https://github.com/OpenAccess-AI-Collective/ggml-webui](https://github.com/OpenAccess-AI-Collective/ggml-webui)
 
 Brought to you by [OpenAccess AI Collective](https://github.com/OpenAccess-AI-Collective)
-
-
