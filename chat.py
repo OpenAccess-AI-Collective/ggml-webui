@@ -68,7 +68,7 @@ start_message = """
 blocks = gr.Blocks()
 
 with blocks:
-    gr.Markdown("# GGML Spaces UI - OpenAccess AI Collective")
+    gr.Markdown("# GGML Spaces Demo")
 
     chatbot = gr.Chatbot()
     with gr.Row():
@@ -84,6 +84,7 @@ with blocks:
     with gr.Row():
         with gr.Column():
             gr.Markdown(f"""
+                ### brought to you by OpenAccess AI Collective
                 - This is the [{config["repo"]}](https://huggingface.co/{config["repo"]}) model file [{config["file"]}](https://huggingface.co/{config["repo"]}/blob/main/{config["file"]})
                 - This Space uses GGML with GPU support, so it can run larger models on smaller GPUs & VRAM quickly.
                 - This is running on a smaller, shared GPU, so it may take a few seconds to respond. 
