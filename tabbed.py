@@ -1,4 +1,7 @@
+import math
+
 import gradio as gr
+import torch
 import yaml
 from huggingface_hub import hf_hub_download
 from huggingface_hub.utils import LocalEntryNotFoundError
@@ -81,17 +84,19 @@ instruct_description = f"""
     - Contribute at [https://github.com/OpenAccess-AI-Collective/ggml-webui](https://github.com/OpenAccess-AI-Collective/ggml-webui)
     """
 
+instruct_interface = gr.Interface(
+    fn=generate_text_instruct,
+    inputs=gr.inputs.Textbox(lines= 10, label="Enter your input text"),
+    outputs=gr.outputs.Textbox(label="Output text"),
+    title="GGML UI Chatbot Demo",
+    description=instruct_description,
+)
+
 with gr.Blocks() as demo:
     with gr.Tab("Instruct"):
         gr.Markdown("# GGML Spaces Instruct Demo")
+        instruct_interface.render()
 
-        gr.Interface(
-            fn=generate_text_instruct,
-            inputs=gr.inputs.Textbox(lines= 10, label="Enter your input text"),
-            outputs=gr.outputs.Textbox(label="Output text"),
-            title="GGML UI Chatbot Demo",
-            description=instruct_description,
-        )
     with gr.Tab("Chatbot"):
         gr.Markdown("# GGML Spaces Chatbot Demo")
         chatbot = gr.Chatbot()
@@ -143,4 +148,13 @@ with gr.Blocks() as demo:
         stop.click(fn=None, inputs=None, outputs=None, cancels=[submit_click_event, message_submit_event], queue=False)
 
 
-demo.queue(max_size=32, concurrency_count=1).launch(debug=True, server_name="0.0.0.0", server_port=7860)
+# figure out how much VRAM is available to see if we can increase concurrency
+concurrency_count = 1
+model_vram_size_in_gb = 11
+if torch.cuda.is_available():
+    device = torch.cuda.current_device()
+    total_memory = torch.cuda.get_device_properties(device).total_memory
+    total_memory_in_gb = total_memory / 1024**3
+    concurrency_count = int(math.floor(total_memory_in_gb / model_vram_size_in_gb))
+
+demo.queue(max_size=16, concurrency_count=1).launch(debug=True, server_name="0.0.0.0", server_port=7860)
