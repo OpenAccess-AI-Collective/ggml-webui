@@ -32,7 +32,7 @@ def chat(history, system_message, max_tokens, temperature, top_p, top_k, repeat_
     history = history or []
 
     messages = system_message + \
-               "\n".join(["\n".join(["### User: "+item[0], "Assistant: "+item[1]])
+               "\n".join(["\n".join(["USER: "+item[0], "ASSISTANT: "+item[1]])
                         for item in history])
 
     history[-1][1] = ""
