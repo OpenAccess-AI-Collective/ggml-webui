@@ -11,4 +11,4 @@ chat:
     - "### User:"
 queue:
   max_size: 16
-  concurrency_count: 2
+  concurrency_count: 1

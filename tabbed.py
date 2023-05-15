@@ -70,26 +70,24 @@ def generate_text_instruct(input_text):
     return output['choices'][0]['text']
 
 
-instruct_description = f"""
-    ### brought to you by OpenAccess AI Collective
-    - This is the [{config["repo"]}](https://huggingface.co/{config["repo"]}) model file [{config["file"]}](https://huggingface.co/{config["repo"]}/blob/main/{config["file"]})
-    - This Space uses GGML with GPU support, so it can quickly run larger models on smaller GPUs & VRAM.
-    - This is running on a smaller, shared GPU, so it may take a few seconds to respond.
-    - Due to a [missing feature in Gradio](https://github.com/gradio-app/gradio/issues/3914), the chatbot interface will not show you your status in the queue. If it's stuck, be patient.  
-    - [Duplicate the Space](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui?duplicate=true) to skip the queue and run in a private space or to use your own GGML models.
-    - When using your own models, simply update the [config.yml](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui/blob/main/config.yml)
-    - Contribute at [https://github.com/OpenAccess-AI-Collective/ggml-webui](https://github.com/OpenAccess-AI-Collective/ggml-webui)
-    """
-
 instruct_interface = gr.Interface(
     fn=generate_text_instruct,
     inputs=gr.inputs.Textbox(lines= 10, label="Enter your input text"),
     outputs=gr.outputs.Textbox(label="Output text"),
-    title="GGML UI Chatbot Demo",
-    description=instruct_description,
 )
 
 with gr.Blocks() as demo:
+    with gr.Row():
+        with gr.Column():
+            gr.Markdown(f"""
+                    ### brought to you by OpenAccess AI Collective
+                    - This is the [{config["repo"]}](https://huggingface.co/{config["repo"]}) model file [{config["file"]}](https://huggingface.co/{config["repo"]}/blob/main/{config["file"]})
+                    - This Space uses GGML with GPU support, so it can quickly run larger models on smaller GPUs & VRAM.
+                    - This is running on a smaller, shared GPU, so it may take a few seconds to respond. 
+                    - [Duplicate the Space](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui?duplicate=true) to skip the queue and run in a private space or to use your own GGML models.
+                    - When using your own models, simply update the [config.yml](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui/blob/main/config.yml)
+                    - Contribute at [https://github.com/OpenAccess-AI-Collective/ggml-webui](https://github.com/OpenAccess-AI-Collective/ggml-webui)
+                    """)
     with gr.Tab("Instruct"):
         gr.Markdown("# GGML Spaces Instruct Demo")
         instruct_interface.render()
@@ -108,16 +106,6 @@ with gr.Blocks() as demo:
             clear = gr.Button(value="New topic", variant="secondary").style(full_width=False)
             stop = gr.Button(value="Stop", variant="secondary").style(full_width=False)
         with gr.Row():
-            with gr.Column():
-                gr.Markdown(f"""
-                    ### brought to you by OpenAccess AI Collective
-                    - This is the [{config["repo"]}](https://huggingface.co/{config["repo"]}) model file [{config["file"]}](https://huggingface.co/{config["repo"]}/blob/main/{config["file"]})
-                    - This Space uses GGML with GPU support, so it can quickly run larger models on smaller GPUs & VRAM.
-                    - This is running on a smaller, shared GPU, so it may take a few seconds to respond. 
-                    - [Duplicate the Space](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui?duplicate=true) to skip the queue and run in a private space or to use your own GGML models.
-                    - When using your own models, simply update the [config.yml](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui/blob/main/config.yml)
-                    - Contribute at [https://github.com/OpenAccess-AI-Collective/ggml-webui](https://github.com/OpenAccess-AI-Collective/ggml-webui)
-                    """)
             with gr.Column():
                 max_tokens = gr.Slider(20, 1000, label="Max Tokens", step=20, value=300)
                 temperature = gr.Slider(0.2, 2.0, label="Temperature", step=0.1, value=0.2)
