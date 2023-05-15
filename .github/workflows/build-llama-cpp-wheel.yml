@@ -3,17 +3,17 @@ name: Build wheel in Docker
 on:
   push:
     branches:
-      - "main"
+      - main
+    paths:
+      - 'Dockerfile-llama-cpp-wheel'
   release:
-    types:
-      - created
+    types: [published]
 
 jobs:
   build:
     runs-on: self-hosted
     permissions:
       contents: write
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -30,7 +30,7 @@ jobs:
           docker cp my-artifact-builder:/build/dists/llama_cpp_python-cpu-0.1.49-cp38-cp38-linux_x86_64.whl ./llama_cpp_python-cpu-0.1.49-cp38-cp38-linux_x86_64.whl
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: wheels
           path: |
@@ -45,7 +45,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Download artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: wheels
 
