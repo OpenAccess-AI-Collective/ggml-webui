@@ -49,7 +49,7 @@ def chat(history, system_message, max_tokens, temperature, top_p, top_k, repeat_
     ):
         answer = output['choices'][0]['text']
         history[-1][1] += answer
-
+        # stream the response
         yield history, history
 
 
@@ -66,8 +66,11 @@ start_message = """
 
 
 def generate_text_instruct(input_text):
-    output = llm(f"### Instruction:\n{input_text}\n\n### Response:\n",  echo=False, **config['chat'])
-    return output['choices'][0]['text']
+    response = ""
+    for output in llm(f"### Instruction:\n{input_text}\n\n### Response:\n",  echo=False, **config['chat']):
+        answer = output['choices'][0]['text']
+        response += answer
+        yield response
 
 
 instruct_interface = gr.Interface(

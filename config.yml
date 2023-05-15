@@ -10,7 +10,8 @@ chat:
   stop:
     - "</s>"
     - "<unk>"
-    - "### User:"
+    - "### USER:"
+    - "USER:"
 queue:
   max_size: 16
-  concurrency_count: 1
+  concurrency_count: 1  # leave this at 1, llama-cpp-python doesn't handle concurrent requests and will crash the entire app
