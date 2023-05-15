@@ -5,7 +5,6 @@ ARG CMAKE_VERSION_PATCH=3.26.3
 ARG CMAKE_OS=linux
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=UTC
-ENV TORCH_CUDA_ARCH_LIST="7.0 7.5 8.0 8.6+PTX"
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
@@ -17,9 +16,7 @@ RUN apt-get update && \
     apt install --no-install-recommends -y gcc-10 g++-10 && \
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100 --slave /usr/bin/g++ g++ /usr/bin/g++-10 --slave /usr/bin/gcov gcov /usr/bin/gcov-10 && \
     rm -rf /var/lib/apt/lists/* && \
-    pip3 install scikit-build && \
-    apt-get install --no-inetall-recommends -y nvidia-cuda-toolkit \
-
+    pip3 install scikit-build
 RUN curl -L https://cmake.org/files/v$CMAKE_VERSION/cmake-$CMAKE_VERSION_PATCH-$CMAKE_OS-x86_64.sh -o /tmp/cmake-$CMAKE_VERSION_PATCH-$CMAKE_OS-x86_64.sh && \
     mkdir /opt/cmake && \
     sh /tmp/cmake-$CMAKE_VERSION_PATCH-$CMAKE_OS-x86_64.sh --skip-license --prefix=/opt/cmake && \
