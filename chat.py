@@ -118,4 +118,4 @@ with blocks:
     )
     stop.click(fn=None, inputs=None, outputs=None, cancels=[submit_click_event, message_submit_event], queue=False)
 
-blocks.queue(max_size=32, concurrency_count=4).launch(debug=True, server_name="0.0.0.0", server_port=7860)
+blocks.queue(max_size=32, concurrency_count=1).launch(debug=True, server_name="0.0.0.0", server_port=7860)
