@@ -28,7 +28,7 @@ def user(message, history):
     return "", history
 
 
-def chat(history, system_message):
+def chat(history, system_message, max_tokens, temperature, top_p, top_k, repeat_penalty):
     history = history or []
 
     messages = system_message + \
@@ -36,7 +36,17 @@ def chat(history, system_message):
                         for item in history])
 
     history[-1][1] = ""
-    for output in llm(messages, echo=False, stream=True, **config['chat']):
+    for output in llm(
+            messages,
+            echo=False,
+            stream=True,
+            max_tokens=max_tokens,
+            temperature=temperature,
+            top_p=top_p,
+            top_k=top_k,
+            repeat_penalty=repeat_penalty,
+            **config['chat']
+    ):
         answer = output['choices'][0]['text']
         history[-1][1] += answer
 
@@ -70,6 +80,22 @@ with blocks:
         submit = gr.Button(value="Send message", variant="secondary").style(full_width=True)
         clear = gr.Button(value="New topic", variant="secondary").style(full_width=False)
         stop = gr.Button(value="Stop", variant="secondary").style(full_width=False)
+    with gr.Row():
+        with gr.Column():
+            gr.Markdown(f"""
+                - This is the [{config["repo"]}](https://huggingface.co/{config["repo"]}) model file [{config["file"]}](https://huggingface.co/{config["repo"]}/blob/main/{config["file"]})
+                - This Space uses GGML with GPU support, so it can run larger models on smaller GPUs & VRAM quickly.
+                - This is running on a smaller, shared GPU, so it may take a few seconds to respond. 
+                - [Duplicate the Space](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui?duplicate=true) to skip the queue and run in a private space or to use your own GGML models.
+                - When using your own models, simply update the [config.yml](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui/blob/main/config.yml)")
+                - Contribute at [https://github.com/OpenAccess-AI-Collective/ggml-webui](https://github.com/OpenAccess-AI-Collective/ggml-webui)
+                """)
+        with gr.Column():
+            max_tokens = gr.Slider(20, 1000, label="Max Tokens", step=20, value=300)
+            temperature = gr.Slider(0.2, 2.0, label="Temperature", step=0.1, value=0.2)
+            top_p = gr.Slider(0.0, 1.0, label="Top P", step=0.05, value=0.95)
+            top_k = gr.Slider(0, 100, label="Top L", step=1, value=40)
+            repeat_penalty = gr.Slider(0.0, 2.0, label="Repetition Penalty", step=0.1, value=1.1)
 
     system_msg = gr.Textbox(
         start_message, label="System Message", interactive=False, visible=False)
@@ -81,22 +107,13 @@ with blocks:
     submit_click_event = submit.click(
         fn=user, inputs=[message, chat_history_state], outputs=[message, chat_history_state], queue=False
     ).then(
-        fn=chat, inputs=[chat_history_state, system_msg], outputs=[chatbot, chat_history_state], queue=True
+        fn=chat, inputs=[chat_history_state, system_msg, max_tokens, temperature, top_p, top_k, repeat_penalty], outputs=[chatbot, chat_history_state], queue=True
     )
     message_submit_event = message.submit(
         fn=user, inputs=[message, chat_history_state], outputs=[message, chat_history_state], queue=False
     ).then(
-        fn=chat, inputs=[chat_history_state, system_msg], outputs=[chatbot, chat_history_state], queue=True
+        fn=chat, inputs=[chat_history_state, system_msg, max_tokens, temperature, top_p, top_k, repeat_penalty], outputs=[chatbot, chat_history_state], queue=True
     )
     stop.click(fn=None, inputs=None, outputs=None, cancels=[submit_click_event, message_submit_event], queue=False)
-
-    gr.Markdown(f"""
-        - This is the [{config["repo"]}](https://huggingface.co/{config["repo"]}) model file [{config["file"]}](https://huggingface.co/{config["repo"]}/blob/main/{config["file"]})
-        - This Space uses GGML with GPU support, so it can run larger models on smaller GPUs & VRAM quickly.
-        - This is running on a smaller, shared GPU, so it may take a few seconds to respond. 
-        - [Duplicate the Space](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui?duplicate=true) to skip the queue and run in a private space or to use your own GGML models.
-        - When using your own models, simply update the [config.yml](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui/blob/main/config.yml)")
-        - Contribute at [https://github.com/OpenAccess-AI-Collective/ggml-webui](https://github.com/OpenAccess-AI-Collective/ggml-webui)
-        """)
 
 blocks.queue(max_size=32, concurrency_count=4).launch(debug=True, server_name="0.0.0.0", server_port=7860)
