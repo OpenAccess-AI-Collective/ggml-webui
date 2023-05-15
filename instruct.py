@@ -24,7 +24,8 @@ description = f"""
 - This Space uses GGML with GPU support, so it can quickly run larger models on smaller GPUs & VRAM.
 - This is running on a smaller, shared GPU, so it may take a few seconds to respond. 
 - [Duplicate the Space](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui?duplicate=true) to skip the queue and run in a private space or to use your own GGML models.
-- When using your own models, simply update the [config.yml](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui/blob/main/config.yml)")
+- When using your own models, simply update the [config.yml](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui/blob/main/config.yml)
+- You can use instruct or chatbot mode by updating the README.md to either `app_file: instruct.py` or `app_file: chat.py`
 - Contribute at [https://github.com/OpenAccess-AI-Collective/ggml-webui](https://github.com/OpenAccess-AI-Collective/ggml-webui)
 """
 
@@ -32,6 +33,6 @@ gr.Interface(
     fn=generate_text,
     inputs=input_text,
     outputs=output_text,
-    title="Llama Language Model",
+    title="GGML UI Demo",
     description=description,
 ).queue(max_size=16, concurrency_count=1).launch()
