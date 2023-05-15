@@ -35,6 +35,9 @@ def chat(history, system_message, max_tokens, temperature, top_p, top_k, repeat_
                "\n".join(["\n".join(["USER: "+item[0], "ASSISTANT: "+item[1]])
                         for item in history])
 
+    # remove last space from assistant, some models output a ZWSP if you leave a space
+    messages = messages[:-1]
+
     history[-1][1] = ""
     for output in llm(
             messages,
