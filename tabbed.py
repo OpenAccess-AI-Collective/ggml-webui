@@ -8,7 +8,8 @@ with open("./config.yml", "r") as f:
     config = yaml.load(f, Loader=yaml.Loader)
 while True:
     try:
-        hub_config = config["hub"]
+        load_config = config.copy()
+        hub_config = load_config["hub"].copy()
         repo_id = hub_config.pop("repo_id")
         filename = hub_config.pop("filename")
         fp = hf_hub_download(
@@ -90,7 +91,7 @@ with gr.Blocks() as demo:
         with gr.Column():
             gr.Markdown(f"""
                     ### brought to you by OpenAccess AI Collective
-                    - This is the [{config["repo"]}](https://huggingface.co/{config["repo"]}) model file [{config["file"]}](https://huggingface.co/{config["repo"]}/blob/main/{config["file"]})
+                    - This is the [{config["hub"]["repo_id"]}](https://huggingface.co/{config["hub"]["repo_id"]}) model file [{config["hub"]["filename"]}](https://huggingface.co/{config["hub"]["repo_id"]}/blob/main/{config["hub"]["filename"]})
                     - This Space uses GGML with GPU support, so it can quickly run larger models on smaller GPUs & VRAM.
                     - This is running on a smaller, shared GPU, so it may take a few seconds to respond. 
                     - [Duplicate the Space](https://huggingface.co/spaces/openaccess-ai-collective/ggml-ui?duplicate=true) to skip the queue and run in a private space or to use your own GGML models.
