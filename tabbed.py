@@ -8,8 +8,11 @@ with open("./config.yml", "r") as f:
     config = yaml.load(f, Loader=yaml.Loader)
 while True:
     try:
+        hub_config = config["hub"]
+        repo_id = hub_config.pop("repo_id")
+        filename = hub_config.pop("filename")
         fp = hf_hub_download(
-            repo_id=config["repo"], filename=config["file"],
+            repo_id=repo_id, filename=filename, **hub_config
         )
         break
     except LocalEntryNotFoundError as e:
@@ -115,16 +118,16 @@ with gr.Blocks() as demo:
         with gr.Row():
             with gr.Column():
                 max_tokens = gr.Slider(20, 1000, label="Max Tokens", step=20, value=300)
-                temperature = gr.Slider(0.2, 2.0, label="Temperature", step=0.1, value=0.2)
+                temperature = gr.Slider(0.2, 2.0, label="Temperature", step=0.1, value=0.8)
                 top_p = gr.Slider(0.0, 1.0, label="Top P", step=0.05, value=0.95)
-                top_k = gr.Slider(0, 100, label="Top L", step=1, value=40)
+                top_k = gr.Slider(0, 100, label="Top K", step=1, value=40)
                 repeat_penalty = gr.Slider(0.0, 2.0, label="Repetition Penalty", step=0.1, value=1.1)
 
         system_msg = gr.Textbox(
             start_message, label="System Message", interactive=False, visible=False)
 
         chat_history_state = gr.State()
-        clear.click(clear_chat, inputs=[chat_history_state, message], outputs=[chat_history_state, message])
+        clear.click(clear_chat, inputs=[chat_history_state, message], outputs=[chat_history_state, message], queue=False)
         clear.click(lambda: None, None, chatbot, queue=False)
 
         submit_click_event = submit.click(
