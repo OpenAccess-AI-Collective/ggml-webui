@@ -26,8 +26,8 @@ jobs:
 
       - name: Copy GPU & CPU artifact from Docker container
         run: |
-          docker cp my-artifact-builder:/build/dists/llama_cpp_python-gpu-0.1.50-cp38-cp38-linux_x86_64.whl ./llama_cpp_python-gpu-0.1.50-cp38-cp38-linux_x86_64.whl
-          docker cp my-artifact-builder:/build/dists/llama_cpp_python-cpu-0.1.50-cp38-cp38-linux_x86_64.whl ./llama_cpp_python-cpu-0.1.50-cp38-cp38-linux_x86_64.whl
+          docker cp my-artifact-builder:/build/dists/llama_cpp_python-gpu-0.1.52-cp38-cp38-linux_x86_64.whl ./llama_cpp_python-gpu-0.1.52-cp38-cp38-linux_x86_64.whl
+          docker cp my-artifact-builder:/build/dists/llama_cpp_python-cpu-0.1.52-cp38-cp38-linux_x86_64.whl ./llama_cpp_python-cpu-0.1.52-cp38-cp38-linux_x86_64.whl
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
