@@ -30,7 +30,7 @@ jobs:
         run: docker build . -t artifact-builder -f Dockerfile-llama-cpp-wheel
 
       - name: Build Docker image
-        run: docker build . -t artifact-builder --build-arg LLAMA_CPP_VERSION=${{ steps.separate.outputs.prefix }} -f Dockerfile-llama-cpp-wheel
+        run: docker build . -t artifact-builder --build-arg CTRANSFORMERS_VERSION=${{ steps.separate.outputs.prefix }} -f Dockerfile-llama-cpp-wheel
 
       - name: Copy GPU artifact from Docker container
         run: |
