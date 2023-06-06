@@ -1,12 +1,12 @@
 name: Build GGML wheel in Docker
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - '*-ggml'  # Will match tags ending with -ggml
 
 jobs:
   build:
-    if: startsWith(github.event.release.tag_name, '*-ggml')
     runs-on: self-hosted
     permissions:
       contents: write
@@ -25,10 +25,7 @@ jobs:
           echo "::set-output name=prefix::$VERSION"
 
       - name: Build Docker image
-        run: docker build . -t artifact-builder -f Dockerfile-llama-cpp-wheel
-
-      - name: Build Docker image
-        run: docker build . -t artifact-builder --build-arg CTRANSFORMERS_VERSION=${{ steps.separate.outputs.prefix }} -f Dockerfile-llama-cpp-wheel
+        run: docker build . -t artifact-builder --build-arg CTRANSFORMERS_VERSION=${{ steps.separate.outputs.prefix }} -f Dockerfile-ggml-cpp-wheel
 
       - name: Copy GPU artifact from Docker container
         run: |

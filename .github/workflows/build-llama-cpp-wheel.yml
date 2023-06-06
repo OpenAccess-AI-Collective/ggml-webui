@@ -1,12 +1,12 @@
 name: Build Llama wheel in Docker
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - '*-llama'
 
 jobs:
   build:
-    if: startsWith(github.event.release.tag_name, '*-llama')
     runs-on: self-hosted
     permissions:
       contents: write
