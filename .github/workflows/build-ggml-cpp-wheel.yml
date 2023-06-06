@@ -1,4 +1,4 @@
-name: Build wheel in Docker
+name: Build GGML wheel in Docker
 
 on:
   release:

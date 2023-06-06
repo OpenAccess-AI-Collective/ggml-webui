@@ -1,4 +1,4 @@
-name: Build wheel in Docker
+name: Build Llama wheel in Docker
 
 on:
   release:
