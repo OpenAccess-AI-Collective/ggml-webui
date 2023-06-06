@@ -3,7 +3,7 @@ name: Build wheel in Docker
 on:
   push:
     tags:
-      - '*-llama'  # Will match tags ending with -llama
+      - '*-ggml'  # Will match tags ending with -ggml
   release:
     types: [published]
 
