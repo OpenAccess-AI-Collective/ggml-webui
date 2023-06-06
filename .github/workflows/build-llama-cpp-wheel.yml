@@ -25,14 +25,11 @@ jobs:
           echo "::set-output name=prefix::$VERSION"
 
       - name: Build Docker image
-        run: docker build . -t artifact-builder -f Dockerfile-llama-cpp-wheel
-
-      - name: Build Docker image
         run: docker build . -t artifact-builder --build-arg LLAMA_CPP_VERSION=${{ steps.separate.outputs.prefix }} -f Dockerfile-llama-cpp-wheel
 
       - name: Copy GPU artifact from Docker container
         run: |
-          docker cp my-artifact-builder:/build/dists/llama_cpp_python-gpu-${{ steps.separate.outputs.prefix }}-cp38-cp38-linux_x86_64.whl ./llama_cpp_python-gpu-${{ steps.separate.outputs.prefix }}-cp38-cp38-linux_x86_64.whl
+          docker cp artifact-builder:/build/dists/llama_cpp_python-gpu-${{ steps.separate.outputs.prefix }}-cp38-cp38-linux_x86_64.whl ./llama_cpp_python-gpu-${{ steps.separate.outputs.prefix }}-cp38-cp38-linux_x86_64.whl
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
