@@ -29,7 +29,7 @@ jobs:
 
       - name: Copy GPU artifact from Docker container
         run: |
-          docker cp my-artifact-builder:/build/dists/ctransformers-gpu-${{ steps.separate.outputs.prefix }}-cp38-cp38-linux_x86_64.whl ./ctransformers-${{ steps.separate.outputs.prefix }}-cp38-cp38-linux_x86_64.whl
+          docker cp my-artifact-builder:/build/dist/ctransformers-${{ steps.separate.outputs.prefix }}-cp38-cp38-linux_x86_64.whl ./ctransformers-${{ steps.separate.outputs.prefix }}-cp38-cp38-linux_x86_64.whl
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3

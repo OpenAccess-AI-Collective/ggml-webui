@@ -42,4 +42,4 @@ RUN pyenv install 3.8.9 && \
     pip install --no-cache-dir --upgrade pip==22.3.1 setuptools wheel && \
     pip install --no-cache-dir datasets "huggingface-hub>=0.12.1" "protobuf<4" "click<8.1" "scikit-build" && \
     CT_CUBLAS=1 python3 setup.py bdist_wheel && \
-    ls -l /build/dists/
+    ls -l /build/dist/
